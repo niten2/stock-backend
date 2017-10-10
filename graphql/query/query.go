@@ -1,13 +1,13 @@
 package query
 
 import (
-  "fmt"
+  // "fmt"
   // "reflect"
 	// "time"
 	// "math/rand"
 	"github.com/graphql-go/graphql"
-  "gopkg.in/mgo.v2"
-  "os"
+  // "gopkg.in/mgo.v2"
+  // "os"
 )
 
 // var TodoList []Todo
@@ -36,31 +36,31 @@ import (
 // 	Name string `json:"text"`
 // }
 
-var productType = graphql.NewObject(
-	graphql.ObjectConfig{
-		Name: "product",
-		Fields: graphql.Fields{
-			"id": &graphql.Field{
-				Type: graphql.String,
-			},
-			"name": &graphql.Field{
-				Type: graphql.String,
-			},
-		},
-	},
-)
+// var productType = graphql.NewObject(
+// 	graphql.ObjectConfig{
+// 		Name: "product",
+// 		Fields: graphql.Fields{
+// 			"id": &graphql.Field{
+// 				Type: graphql.String,
+// 			},
+// 			"name": &graphql.Field{
+// 				Type: graphql.String,
+// 			},
+// 		},
+// 	},
+// )
 
-type ProductDocument struct {
-	Id string `bson:"_id,omitempty"`
-	Name string
-  Phone string
-}
+// type ProductDocument struct {
+// 	Id string `bson:"_id,omitempty"`
+// 	Name string
+//   Phone string
+// }
 
-type Product struct {
-  Id string
-  Name string
-  Phone string
-}
+// type Product struct {
+//   Id string
+//   Name string
+//   Phone string
+// }
 
 
 // func init() {
@@ -93,32 +93,18 @@ var Query = graphql.NewObject(graphql.ObjectConfig{
 		// 	},
 		// },
 
-		"product": &graphql.Field{
-			Type: productType,
+		// "product": &graphql.Field{
+		// 	Type: productType,
 
-			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-        // todo := Product{ID: "xcccccca", Name: "sdfsdfsdfdsf"}
+		// 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+        // // todo := Product{ID: "xcccccca", Name: "sdfsdfsdfdsf"}
 
+        // // product := Product{doc.Id, doc.Name}
 
-        mongoSession, err := mgo.Dial(os.Getenv("DB_URL"))
-        if err != nil {
-          fmt.Println("Error mongoSession")
-          panic(err)
-        }
-
-        db := mongoSession.DB(os.Getenv("DB_NAME"))
-
-        doc := ProductDocument{}
-        db.C("products").FindId("59d9c330379d93005fe56f86").One(&doc)
-
-        fmt.Println(doc)
-
-        // product := Product{doc.Id, doc.Name}
-
-				// return product, nil
-				return nil, nil
-			},
-		},
+		// 		// return product, nil
+		// 		return nil, nil
+		// 	},
+		// },
 
 
 		// "products": &graphql.Field{

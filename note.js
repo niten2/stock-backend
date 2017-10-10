@@ -1,3 +1,6 @@
+goconvey
+
+
   // s3Bucket := os.Getenv("S3_BUCKET")
   // secretKey := os.Getenv("SECRET_KEY")
 

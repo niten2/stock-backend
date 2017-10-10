@@ -1,6 +1,5 @@
 go-todo-api
 ===============
 
-
-go get github.com/codegangsta/gin
-gin run main.go
+- go get
+- gin run main.go
