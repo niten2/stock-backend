@@ -18,18 +18,10 @@ import (
 type Product struct {
   ID bson.ObjectId `bson:"_id,omitempty"`
 	Name string `json: "username"`
+	// Age	int `json: "age"`
+	// LastUpdated time.Time
 }
 
-
-// Profile - is the memory representation of one user profile
-// type Profile struct {
-// 	Name 			string			`json: "username"`
-// 	Password 		string			`json: "password"`
-// 	Age 			int				`json: "age"`
-// 	LastUpdated     time.Time
-// }
-
-// func AllProduct() []Product {
 func AllProduct() []Product {
   db := ConnectDb().C("Products")
 
@@ -39,7 +31,6 @@ func AllProduct() []Product {
   if err != nil {
     fmt.Println(err)
   }
-
 
 	return products
 }
@@ -59,7 +50,6 @@ func CreateProduct(product Product) bool {
 
 func ShowProduct(id string) Product {
   db := ConnectDb().C("Products")
-
 	product := Product{}
 
   err := db.FindId(id).One(&product)
@@ -70,20 +60,26 @@ func ShowProduct(id string) Product {
 	return product
 }
 
-// // DeleteProfile - Deletes the profile in the Profiles Collection with name equal to the id parameter (id == name)
-// func DeleteProfile(id string) bool {
-// 	session, err := mgo.Dial("localhost:27017")
-// 	if err != nil {
-// 		log.Println("Could not connect to mongo: ", err.Error())
-// 		return false
-// 	}
-// 	defer session.Close()
+func DeleteProduct(id string) bool {
+  db := ConnectDb().C("Products")
 
-// 	// Optional. Switch the session to a monotonic behavior.
-// 	session.SetMode(mgo.Monotonic, true)
+  err := db.RemoveId(id)
+  if err != nil {
+    fmt.Println(err)
+    return false
+  }
 
-// 	c := session.DB("ProfileService").C("Profiles")
-// 	err = c.RemoveId(id)
+	return true
+}
 
-// 	return true
-// }
+func UpdateProduct(id string, attributes bson.M) bool {
+  db := ConnectDb().C("Products")
+
+  err := db.Update(bson.M{"_id": id}, bson.M{"$set": attributes})
+  if err != nil {
+    fmt.Println(err)
+    return false
+  }
+
+	return true
+}
