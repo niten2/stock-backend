@@ -5,29 +5,32 @@ import (
 	// "log"
   // "os"
 	// "gopkg.in/mgo.v2"
+  // "fmt"
 	"gopkg.in/mgo.v2/bson"
 
-	. "go-todo-api/db"
+	"go-todo-api/db"
 )
 
-// type ProductDocument struct {
-// 	Id string `bson:"_id,omitempty"`
-// 	Name string
-// }
-
 type Product struct {
-  ID bson.ObjectId `bson:"_id,omitempty"`
-	Name string `json: "username"`
-	// Age	int `json: "age"`
+	// Name string `json: "name"`
+	// ID string `json:"id"`
+  // ID bson.ObjectId `bson:"_id,omitempty"`
+  // Id string `json:"_id" bson:"_id,omitempty"`
+  // Id bson.ObjectId `json:"_id" bson:"_id,omitempty"`
+
+  // Id string `json:"id" bson:"_id,omitempty"`
+  Id string `json:"id" bson:"_id,omitempty"`
+	Name string `json:"name"`
+	// Info string `json: "info"`
 	// LastUpdated time.Time
 }
 
 func AllProduct() []Product {
-  db := ConnectDb().C("Products")
+  DbProduct := db.Db.C("products")
 
 	var products []Product
 
-  err := db.Find(bson.M{}).All(&products)
+  err := DbProduct.Find(bson.M{}).All(&products)
   if err != nil {
     fmt.Println(err)
   }
@@ -35,24 +38,27 @@ func AllProduct() []Product {
 	return products
 }
 
-func CreateProduct(product Product) bool {
-  db := ConnectDb().C("Products")
-  err := db.Insert(product)
+func CreateProduct(product Product) Product {
+  DbProduct := db.Db.C("products")
 
-  if err != nil {
-    fmt.Println(err)
-    return false
+  if product.Id == "" {
+    product.Id = bson.NewObjectId().Hex()
   }
 
-	return true
+  err := DbProduct.Insert(product)
+  if err != nil {
+    fmt.Println(err)
+  }
+
+	return product
 }
 
-
 func ShowProduct(id string) Product {
-  db := ConnectDb().C("Products")
+  DbProduct := db.Db.C("products")
+
 	product := Product{}
 
-  err := db.FindId(id).One(&product)
+  err := DbProduct.FindId(id).One(&product)
   if err != nil {
     fmt.Println(err)
   }
@@ -61,9 +67,9 @@ func ShowProduct(id string) Product {
 }
 
 func DeleteProduct(id string) bool {
-  db := ConnectDb().C("Products")
+  DbProduct := db.Db.C("products")
 
-  err := db.RemoveId(id)
+  err := DbProduct.RemoveId(id)
   if err != nil {
     fmt.Println(err)
     return false
@@ -73,9 +79,9 @@ func DeleteProduct(id string) bool {
 }
 
 func UpdateProduct(id string, attributes bson.M) bool {
-  db := ConnectDb().C("Products")
+  DbProduct := db.Db.C("products")
 
-  err := db.Update(bson.M{"_id": id}, bson.M{"$set": attributes})
+  err := DbProduct.Update(bson.M{"_id": id}, bson.M{"$set": attributes})
   if err != nil {
     fmt.Println(err)
     return false

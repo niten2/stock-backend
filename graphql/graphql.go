@@ -10,7 +10,7 @@ import (
 
 func ExecuteQuery(query string) *graphql.Result {
 	result := graphql.Do(graphql.Params{
-		Schema: schema,
+		Schema: Schema,
 		RequestString: query,
 	})
 
@@ -21,7 +21,7 @@ func ExecuteQuery(query string) *graphql.Result {
 	return result
 }
 
-var schema, _ = graphql.NewSchema(graphql.SchemaConfig{
+var Schema, _ = graphql.NewSchema(graphql.SchemaConfig{
 	Query: query.Query,
 	Mutation: mutation.Mutation,
 })

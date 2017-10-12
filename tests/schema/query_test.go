@@ -1,13 +1,71 @@
-// package graphql_test
+package testing
+
+import (
+  // "fmt"
+  "testing"
+	"reflect"
+  "github.com/joho/godotenv"
+  "github.com/graphql-go/graphql"
+  . "github.com/smartystreets/goconvey/convey"
+
+  . "go-todo-api/models"
+  "go-todo-api/db"
+  . "go-todo-api/graphql"
+	// "gopkg.in/mgo.v2/bson"
+)
+
+func init() {
+  _ = godotenv.Load("../../.env.test")
+	db.Connect()
+}
+
+func TestQuery(t *testing.T) {
+  DbProduct := db.Db.C("products")
+  DbProduct.RemoveAll(nil)
+
+  Convey("AllProduct", t, func() {
+    CreateProduct(Product{Id: "1", Name: "test1"})
+    CreateProduct(Product{Id: "2", Name: "test2"})
+
+    query := "query { products { id name } }"
+    res := ExecuteQuery(query)
+
+    expected := &graphql.Result{
+      Data: map[string]interface{}{
+        "products": []interface{}{
+          map[string]interface{}{
+            "id":   "1",
+            "name": "test1",
+          },
+          map[string]interface{}{
+            "id":   "2",
+            "name": "test2",
+          },
+        },
+      },
+    }
+
+    eq := reflect.DeepEqual(res, expected)
+    So(eq, ShouldBeTrue)
+  })
+}
+
+// package testing
 
 // import (
-// 	"context"
+// 	// "context"
+//   // "fmt"
 // 	"reflect"
 // 	"testing"
-
 // 	"github.com/graphql-go/graphql"
 // 	"github.com/graphql-go/graphql/testutil"
+
+//   myGraphql "go-todo-api/graphql"
 // )
+
+// // func init () {
+// //   fmt.Println(graphql.Schema)
+// // }
 
 // type T struct {
 // 	Query    string
@@ -21,13 +79,13 @@
 // 	Tests = []T{
 // 		{
 // 			Query: `
-// 				query HeroNameQuery {
-// 					hero {
+// 				query products {
+// 					products {
 // 						name
 // 					}
 // 				}
 // 			`,
-// 			Schema: testutil.StarWarsSchema,
+// 			Schema: myGraphql.Schema,
 // 			Expected: &graphql.Result{
 // 				Data: map[string]interface{}{
 // 					"hero": map[string]interface{}{
@@ -36,43 +94,47 @@
 // 				},
 // 			},
 // 		},
-// 		{
-// 			Query: `
-// 				query HeroNameAndFriendsQuery {
-// 					hero {
-// 						id
-// 						name
-// 						friends {
-// 							name
-// 						}
-// 					}
-// 				}
-// 			`,
-// 			Schema: testutil.StarWarsSchema,
-// 			Expected: &graphql.Result{
-// 				Data: map[string]interface{}{
-// 					"hero": map[string]interface{}{
-// 						"id":   "2001",
-// 						"name": "R2-D2",
-// 						"friends": []interface{}{
-// 							map[string]interface{}{
-// 								"name": "Luke Skywalker",
-// 							},
-// 							map[string]interface{}{
-// 								"name": "Han Solo",
-// 							},
-// 							map[string]interface{}{
-// 								"name": "Leia Organa",
-// 							},
-// 						},
-// 					},
-// 				},
-// 			},
-// 		},
+
+// 		// {
+// 		// 	Query: `
+// 		// 		query HeroNameAndFriendsQuery {
+// 		// 			hero {
+// 		// 				id
+// 		// 				name
+// 		// 				friends {
+// 		// 					name
+// 		// 				}
+// 		// 			}
+// 		// 		}
+// 		// 	`,
+// 		// 	Schema: testutil.StarWarsSchema,
+// 		// 	Expected: &graphql.Result{
+// 		// 		Data: map[string]interface{}{
+// 		// 			"hero": map[string]interface{}{
+// 		// 				"id":   "2001",
+// 		// 				"name": "R2-D2",
+// 		// 				"friends": []interface{}{
+// 		// 					map[string]interface{}{
+// 		// 						"name": "Luke Skywalker",
+// 		// 					},
+// 		// 					map[string]interface{}{
+// 		// 						"name": "Han Solo",
+// 		// 					},
+// 		// 					map[string]interface{}{
+// 		// 						"name": "Leia Organa",
+// 		// 					},
+// 		// 				},
+// 		// 			},
+// 		// 		},
+// 		// 	},
+// 		// },
+
 // 	}
 // }
 
 // func TestQuery(t *testing.T) {
+//   // fmt.Println(Schema)
+
 // 	for _, test := range Tests {
 // 		params := graphql.Params{
 // 			Schema:        test.Schema,
@@ -84,13 +146,17 @@
 
 // func testGraphql(test T, p graphql.Params, t *testing.T) {
 // 	result := graphql.Do(p)
+
 // 	if len(result.Errors) > 0 {
 // 		t.Fatalf("wrong result, unexpected errors: %v", result.Errors)
 // 	}
+
 // 	if !reflect.DeepEqual(result, test.Expected) {
 // 		t.Fatalf("wrong result, query: %v, graphql result diff: %v", test.Query, testutil.Diff(test.Expected, result))
 // 	}
 // }
+
+
 
 // func TestBasicGraphQLExample(t *testing.T) {
 // 	// taken from `graphql-js` README

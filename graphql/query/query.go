@@ -2,97 +2,30 @@ package query
 
 import (
   // "fmt"
+  // "os"
   // "reflect"
 	// "time"
 	// "math/rand"
-	"github.com/graphql-go/graphql"
-  // "gopkg.in/mgo.v2"
   // "os"
+	"github.com/graphql-go/graphql"
+  // "github.com/fatih/structs"
+  // "gopkg.in/mgo.v2"
+
+	. "go-todo-api/models"
+	// "go-todo-api/db"
 )
 
-// var TodoList []Todo
-
-
-// type Todo struct {
-// 	ID   string `json:"id"`
-// 	Name string `json:"text"`
-// 	Title string `json:"text"`
-// }
-
-
-// var todoType = graphql.NewObject(graphql.ObjectConfig{
-// 	Name: "Todo",
-
-// 	Fields: graphql.Fields{
-// 		"id": &graphql.Field{Type: graphql.String},
-// 		"name": &graphql.Field{Type: graphql.String},
-// 		"title": &graphql.Field{Type: graphql.String},
-// 	},
-// })
-
-
-// type Product struct {
-// 	ID   string `json:"id"`
-// 	Name string `json:"text"`
-// }
-
-// var productType = graphql.NewObject(
-// 	graphql.ObjectConfig{
-// 		Name: "product",
-// 		Fields: graphql.Fields{
-// 			"id": &graphql.Field{
-// 				Type: graphql.String,
-// 			},
-// 			"name": &graphql.Field{
-// 				Type: graphql.String,
-// 			},
-// 		},
-// 	},
-// )
-
-// type ProductDocument struct {
-// 	Id string `bson:"_id,omitempty"`
-// 	Name string
-//   Phone string
-// }
-
-// type Product struct {
-//   Id string
-//   Name string
-//   Phone string
-// }
-
-
-// func init() {
-// 	todo1 := Todo{ID: "a", Title: "A 3333todo not to forget"}
-// 	// todo2 := Todo{ID: "b", Name2: "This is the most important"}
-// 	// todo3 := Todo{ID: "c", Name2: "Please do this or else"}
-//   // fmt.Println(todo1)
-
-// 	// TodoList = append(TodoList, todo1, todo2, todo3)
-// 	TodoList = append(TodoList, todo1)
-//   // fmt.Println(TodoList)
-
-
-// 	rand.Seed(time.Now().UnixNano())
-// }
-
+var productType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Product",
+	Fields: graphql.Fields{
+		"id": &graphql.Field{ Type: graphql.String },
+		"name": &graphql.Field{ Type: graphql.String },
+	},
+})
 
 var Query = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
-
-		// "todo": &graphql.Field{
-		// 	Type: todoType,
-
-		// 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-        // todo := Todo{ID: "xcccccca", NameTitle: "sdfsdfsdfdsf"}
-        // // fmt.Println(todo.Title)
-
-        // return todo, nil
-		// 	},
-		// },
-
 		// "product": &graphql.Field{
 		// 	Type: productType,
 
@@ -106,21 +39,13 @@ var Query = graphql.NewObject(graphql.ObjectConfig{
 		// 	},
 		// },
 
-
-		// "products": &graphql.Field{
-		// 	Type:        graphql.NewList(productType),
-		// 	Description: "List of todos",
-
-		// 	Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-        // // fmt.Println(TodoList)
-
-        // todo1 := Product{ID: "xcccccca", Name: "sdfsdfsdfdsf"}
-        // todo2 := Product{ID: "xcccccca", Name: "sdfsdfsdfdsf"}
-
-		// 		// return TodoList, nil
-		// 		return todo, nil
-		// 	},
-		// },
+		"products": &graphql.Field{
+			Type: graphql.NewList(productType),
+			Description: "List products",
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				return AllProduct(), nil
+			},
+		},
 	},
 })
 
