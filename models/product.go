@@ -12,17 +12,9 @@ import (
 )
 
 type Product struct {
-	// Name string `json: "name"`
-	// ID string `json:"id"`
-  // ID bson.ObjectId `bson:"_id,omitempty"`
-  // Id string `json:"_id" bson:"_id,omitempty"`
-  // Id bson.ObjectId `json:"_id" bson:"_id,omitempty"`
-
   // Id string `json:"id" bson:"_id,omitempty"`
   Id string `json:"id" bson:"_id,omitempty"`
 	Name string `json:"name"`
-	// Info string `json: "info"`
-	// LastUpdated time.Time
 }
 
 func AllProduct() []Product {
