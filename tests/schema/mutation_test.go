@@ -1,13 +1,11 @@
 package testing
 
 import (
-  "testing"
 	// "reflect"
-  // "github.com/graphql-go/graphql"
+  // "github.com/mailgun/godebug"
+  "testing"
   "github.com/joho/godotenv"
   . "github.com/smartystreets/goconvey/convey"
-  // "encoding/json"
-  // "github.com/mailgun/godebug"
 
   "go-todo-api/db"
   . "go-todo-api/models"

@@ -1,35 +1,25 @@
 package routers
 
 import (
-	"net/http"
-  "github.com/go-martini/martini"
-  "gopkg.in/mgo.v2"
-  "github.com/codegangsta/martini-contrib/render"
+  "net/http"
+  "encoding/json"
+  "github.com/gorilla/mux"
+  "go-todo-api/graphql"
 )
 
-type ProductDocument struct {
-	Id string `bson:"_id,omitempty"`
-	Name string
-  Phone string
+func Handlers() *mux.Router {
+  r := mux.NewRouter()
+	r.HandleFunc("/", mainHandler)
+	r.HandleFunc("/v1", graphqlHandler)
+  return r
 }
 
-type Product struct {
-  Id string
-  Name string
-  Phone string
+func mainHandler(w http.ResponseWriter, r *http.Request) {
+  res, _ := json.Marshal(map[string]string{"service": "go-todo", "version": "v1", "graphql": "/v1"})
+  w.Write(res)
 }
 
-func ProductsHandler(rnd render.Render, r *http.Request, params martini.Params, db *mgo.Database) {
-
-	productDocuments := []Product{}
-	productCollection := db.C("products")
-	productCollection.Find(nil).All(&productDocuments)
-
-	products := []Product{}
-	for _, doc := range productDocuments {
-		product := Product{doc.Id, doc.Name, doc.Phone}
-		products = append(products, product)
-	}
-
-  rnd.JSON(200, products)
+func graphqlHandler(w http.ResponseWriter, r *http.Request) {
+  result := graphql.ExecuteQuery(r.URL.Query().Get("query"))
+  json.NewEncoder(w).Encode(result)
 }
