@@ -8,6 +8,9 @@ import (
 
   "go-todo-api/db"
 	"go-todo-api/routers"
+
+  // "go-todo-api/graphql"
+	// "github.com/graphql-go/handler"
 )
 
 func init() {
@@ -16,7 +19,18 @@ func init() {
 }
 
 func main() {
-  _ = godotenv.Load()
   fmt.Println("server run")
+
+  // mux := http.NewServeMux()
+
+	// h := handler.New(&handler.Config{
+		// Schema: &graphql.Schema,
+		// Pretty: true,
+		// GraphiQL: true,
+	// })
+
+
+  // mux.HandleFunc("/v1", h)
+
 	http.ListenAndServe(os.Getenv("PORT"), routers.Handlers())
 }

@@ -4,7 +4,7 @@ import (
 	"github.com/graphql-go/graphql"
 
 	. "go-todo-api/models"
-	. "go-todo-api/graphql/types"
+	. "go-todo-api/schema/types"
 )
 
 var Query = graphql.NewObject(graphql.ObjectConfig{
