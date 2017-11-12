@@ -15,4 +15,3 @@ RUN go get -u github.com/smartystreets/goconvey
 
 RUN go-wrapper download
 RUN go-wrapper install
-
