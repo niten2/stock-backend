@@ -1,36 +1,44 @@
+
 package main
 
 import (
-  "fmt"
-  "os"
-	"net/http"
-  "github.com/joho/godotenv"
-
-  "go-todo-api/db"
-	"go-todo-api/routers"
-
-  // "go-todo-api/graphql"
-	// "github.com/graphql-go/handler"
+  // "fmt"
+  _ "app/routers"
+  // _ "app/models"
+  "github.com/astaxie/beego"
+  // "app/db"
+  // "github.com/jinzhu/gorm"
 )
 
-func init() {
-  _ = godotenv.Load()
-	db.Connect()
-}
+// func init() {
+//   _ = godotenv.Load()
+// 	// db.Connect()
+//   // defer db.Close()
+//   beego.Run()
+// }
+
 
 func main() {
-  fmt.Println("server run")
-
-  // mux := http.NewServeMux()
-
-	// h := handler.New(&handler.Config{
-		// Schema: &graphql.Schema,
-		// Pretty: true,
-		// GraphiQL: true,
-	// })
-
-
-  // mux.HandleFunc("/v1", h)
-
-	http.ListenAndServe(os.Getenv("PORT"), routers.Handlers())
+  beego.Run()
 }
+
+
+// func main() {
+//   conn := getDBConnection()
+//   defer conn.Close()
+// }
+
+// func getDBConnection() *gorm.DB {
+//   dbHost := beego.AppConfig.String("dbHost")
+//   dbUser := beego.AppConfig.String("dbUser")
+//   dbName := beego.AppConfig.String("dbName")
+//   dbPass := beego.AppConfig.String("dbPass")
+//   conn, err := db.Connect(dbHost, dbName, dbUser, dbPass)
+//   if err != nil {
+//     panic(err.Error())
+//   }
+//   db.AutoMigrate()
+//   return conn
+// }
+
+

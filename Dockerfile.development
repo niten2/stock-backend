@@ -1,0 +1,18 @@
+FROM golang:1.9.2
+
+RUN apt-get update -qq
+
+# install zsh
+RUN apt-get install -y zsh
+RUN git clone https://github.com/robbyrussell/oh-my-zsh ~/.oh-my-zsh
+RUN wget -O /root/.zshrc https://raw.githubusercontent.com/niten2/dotfiles/master/files/zshrc
+
+WORKDIR /go/src/app
+ADD . /go/src/app
+
+RUN go get -u github.com/beego/bee
+RUN go get -u github.com/smartystreets/goconvey
+
+RUN go-wrapper download
+RUN go-wrapper install
+

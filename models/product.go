@@ -1,14 +1,13 @@
-package product
+package models
 
 import (
   "fmt"
 	// "log"
   // "os"
 	// "gopkg.in/mgo.v2"
-  // "fmt"
 	"gopkg.in/mgo.v2/bson"
 
-	"go-todo-api/db"
+	"app/db"
 )
 
 type Product struct {
