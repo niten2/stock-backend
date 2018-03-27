@@ -1,13 +1,12 @@
-
 package main
 
 import (
-  // "fmt"
-  _ "app/routers"
-  // _ "app/models"
-  "github.com/astaxie/beego"
-  // "app/db"
-  // "github.com/jinzhu/gorm"
+	// "fmt"
+	_ "app/routers"
+	// _ "app/models"
+	"github.com/astaxie/beego"
+	// "app/db"
+	// "github.com/jinzhu/gorm"
 )
 
 // func init() {
@@ -17,11 +16,9 @@ import (
 //   beego.Run()
 // }
 
-
 func main() {
-  beego.Run()
+	beego.Run()
 }
-
 
 // func main() {
 //   conn := getDBConnection()
@@ -40,5 +37,3 @@ func main() {
 //   db.AutoMigrate()
 //   return conn
 // }
-
-
