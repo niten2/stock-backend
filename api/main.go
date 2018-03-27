@@ -1,4 +1,4 @@
-package controllers
+package api
 
 import (
 	"github.com/astaxie/beego"
@@ -9,5 +9,5 @@ type MainController struct {
 }
 
 func (this *MainController) Home() {
-  this.Ctx.WriteString("hello world")
+	this.Ctx.WriteString("hello world")
 }
